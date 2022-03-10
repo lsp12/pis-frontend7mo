@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createTheme, ThemeProvider } from '@mui/material';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Store } from './Store/Store';
+
+const themes = createTheme(
+  {
+    palette: {
+      mode: 'dark',
+
+    },
+  },
+);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={Store}>
+      <ThemeProvider theme={themes}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById( 'root' ),
 );
@@ -14,4 +31,3 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
