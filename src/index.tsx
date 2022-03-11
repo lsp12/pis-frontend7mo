@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createTheme, ThemeProvider } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 import App from './App';
 import { Store } from './Store/Store';
+import 'react-toastify/dist/ReactToastify.css';
 
 const themes = createTheme(
   {
@@ -21,6 +23,7 @@ ReactDOM.render(
       <ThemeProvider theme={themes}>
         <BrowserRouter>
           <App />
+          <ToastContainer />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>

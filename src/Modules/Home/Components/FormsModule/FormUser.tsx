@@ -7,9 +7,12 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 import { userFormSchema } from '../../validator/formUser';
 import { useInitialHomeForm } from '../../hooks/homeHooks';
 import { IFormUser } from '../../interface/HomeInterfaceForm';
+import { useAppDispatch } from '../../../../Store/Hooks';
+import { postUser, updateUser } from '../../Reducer/UserReducer';
 
 function FormUser() {
   const [showPassword, setShowPassword] = React.useState( false );
+  const dispatch = useAppDispatch();
   const handleClickShowPassword = () => {
     setShowPassword( !showPassword );
   };
@@ -18,17 +21,26 @@ function FormUser() {
     event.preventDefault();
   };
 
-  const { getFieldProps, errors, touched } = useFormik<IFormUser>({
+  const {
+    getFieldProps, errors, touched, handleSubmit,
+  } = useFormik<IFormUser>({
     initialValues: useInitialHomeForm(),
     enableReinitialize: true,
     validationSchema: userFormSchema,
     onSubmit: ( FormValues ) => {
-      console.log( FormValues );
+      if ( FormValues.id ) {
+        dispatch( updateUser( FormValues ));
+      } else {
+        dispatch( postUser( FormValues ));
+      }
     },
   });
 
   return (
-    <form>
+    <form
+      onSubmit={handleSubmit}
+      autoComplete="false"
+    >
       <Container>
         <Grid
           container
@@ -41,9 +53,9 @@ function FormUser() {
               variant="filled"
               fullWidth
               label="Nombre de usuario"
-              {...getFieldProps( 'name' )}
-              error={touched.name && !!errors.name}
-              helperText={touched.name && errors.name}
+              {...getFieldProps( 'username' )}
+              error={touched.username && !!errors.username}
+              helperText={touched.username && errors.username}
             />
           </Grid>
           <Grid item xs={12} md={12}>

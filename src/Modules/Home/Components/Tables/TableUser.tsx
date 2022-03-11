@@ -2,24 +2,29 @@ import { Button, Container, Typography } from '@mui/material';
 import {
   GridRowsProp, GridColDef, GridValueGetterParams, DataGrid,
 } from '@mui/x-data-grid';
+import { useAppDispatch, useAppSelector } from '../../../../Store/Hooks';
 import { IFormUser } from '../../interface/HomeInterfaceForm';
+import { setDialog, setId } from '../../slice/User.slice';
 
 interface tableProps {
   data: IFormUser[];
 }
 
 export function TableUser({ data }: tableProps ) {
-  console.log( data );
+  const dispatch = useAppDispatch();
+  const { dialog } = useAppSelector(( state ) => state.user );
+
   const handlerEditUser = ( id:number ) => {
-    console.log( 'Editar', id );
+    dispatch( setId( id ));
   };
   const handlerDeleteUser = ( id:number ) => {
-    console.log( 'Eliminar', id );
+    dispatch( setId( id ));
+    dispatch( setDialog( !dialog ));
   };
   const rows: GridRowsProp = data.map(
     ( Data: IFormUser, index ) => ({
       id: Data?.id || index,
-      name: Data.name,
+      username: Data.username,
       actions: Data,
     }),
   );
@@ -33,7 +38,7 @@ export function TableUser({ data }: tableProps ) {
     },
     {
       headerName: 'Name User',
-      field: 'name',
+      field: 'username',
       sortable: true,
       width: 300,
     },
